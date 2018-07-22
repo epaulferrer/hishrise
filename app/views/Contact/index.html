@@ -1,0 +1,46 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+#{form @Application.searchContactBytag()}
+    #{ifErrors}
+        <p class="error">
+            Please enter a tag name to search!
+        </p>
+    #{/ifErrors}
+ 
+    <p>
+        <label for="tagName">Search contacts by tag: </label>
+        <input type="text" name="tagName" id="tagName" value="${params.tagName}" />
+    </p>
+
+    <p>
+        <input type="submit" value="Search" />
+        <a href="@{Contact.showList()}">Go to Contacts Page</a>
+    </p>
+    
+#{/form}
+
+#{if noTagFound}
+<h2>No contacts found with tag name ${tagName} </h2>
+#{/if}
+
+#{else}
+<table border=1>
+	<tr>
+		<th>Contact name</th>
+		<th>Is a Company</th>
+		<th>Tags</th>
+	</tr>
+	#{list items:contacts, as:'contact'}
+		<tr>
+			<td>${contact.name}</td>
+			<td>${contact.isCompany}</td>
+			<td>
+				#{list items:contact.tags, as:'tag'}
+					${tag.tagName},
+				#{/list}
+			</td>
+		</tr>
+	#{/list}
+</table>
+#{/else}
